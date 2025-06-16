@@ -1,0 +1,3 @@
+var posts=["2025/03/02/RCE/","2025/02/18/hello-world/","2025/03/05/SHOWRCE/","2025/03/16/emojictfweb/","2025/03/16/isctf2024web/","2025/03/16/ctfshow中php特性上/","2025/03/17/isctf2023web部分wp/","2025/03/18/basectf2024web部分wp/","2025/03/25/show-sql注入上/","2025/04/02/SSTI漏洞/","2025/04/07/复现xyctf2024/","2025/04/09/xyctf2025web部分wp/","2025/04/20/玄机应急响应上/","2025/04/24/php特性总结上/","2025/04/24/php特性总结下/","2025/04/22/SQL注入/","2025/05/10/TGCTFweb部分/","2025/05/13/PHP反序列化/"];function toRandomPost(){
+    pjax.loadUrl('/'+posts[Math.floor(Math.random() * posts.length)]);
+  };
